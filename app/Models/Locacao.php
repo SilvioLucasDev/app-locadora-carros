@@ -10,3 +10,7 @@ class Locacao extends Model
     use HasFactory;
     protected $table = 'locacoes';
 }
+
+Route::get('/', function () {
+    return ['Chegamos até aqui' => 'SIM'];
+});
