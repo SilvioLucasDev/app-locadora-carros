@@ -28,7 +28,7 @@ class MarcaController extends Controller
     {
         $request->validate($this->marca->rules(), $this->marca->feedback());
         $imagem = $request->file('imagem');
-        $imagem_urn = $imagem->store('imagens', 'public');
+        $imagem_urn = $imagem->store('imagens/marcas', 'public');
         $marca = $this->marca->create([
             'nome' => $request->nome,
             'imagem' => $imagem_urn
@@ -64,7 +64,7 @@ class MarcaController extends Controller
         }
         if (!empty($request->file('imagem'))) Storage::disk('public')->delete($marca->imagem);
         $imagem = $request->file('imagem');
-        $imagem_urn = $imagem->store('imagens', 'public');
+        $imagem_urn = $imagem->store('imagens/marcas', 'public');
         $marca->update([
             'nome' => $request->nome,
             'imagem' => $imagem_urn
