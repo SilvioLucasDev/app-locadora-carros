@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MarcaController extends Controller
 {
-    public function __construct(public Marca $marca)
+    public function __construct(private Marca $marca)
     {
     }
 

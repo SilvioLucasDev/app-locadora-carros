@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ModeloController extends Controller
 {
-    public function __construct(public Modelo $modelo)
+    public function __construct(private Modelo $modelo)
     {
     }
 
