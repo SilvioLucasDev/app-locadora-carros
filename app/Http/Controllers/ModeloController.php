@@ -65,18 +65,14 @@ class ModeloController extends Controller
         } else {
             $request->validate($this->modelo->rules($id), $this->modelo->feedback());
         }
-        if (!empty($request->file('imagem'))) Storage::disk('public')->delete($modelo->imagem);
-        $imagem = $request->file('imagem');
-        $imagem_urn = $imagem->store('imagens/modelos', 'public');
-        $modelo->update([
-            'marca_id' => $request->marca_id,
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn,
-            'numero_portas' => $request->numero_portas,
-            'lugares' => $request->lugares,
-            'air_bag' => $request->air_bag,
-            'abs' => $request->abs,
-        ]);
+        if ($request->file('imagem')) {
+            Storage::disk('public')->delete($modelo->imagem);
+            $imagem = $request->file('imagem');
+            $imagem_urn = $imagem->store('imagens/modelos', 'public');
+        }
+        $modelo->fill($request->all());
+        $request->file('imagem') ? $modelo->imagem = $imagem_urn : '';
+        $modelo->save();
         return $modelo;
     }
 
