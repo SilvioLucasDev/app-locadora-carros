@@ -37,4 +37,8 @@ class Modelo extends Model
             'boolean' => 'O campo :attribute deve ser um boolean',
         ];
     }
+
+    public function marca() {
+        return $this->belongsTo('App\Models\Marca');
+    }
 }
