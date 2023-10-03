@@ -15,9 +15,29 @@ class ModeloController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->modelo->with('marca')->get();
+        $modelos = array();
+        if ($request->has('atributos_marca')) {
+            $atributos_marca = $request->atributos_marca;
+            $modelos = $this->modelo->with("marca:id,{$atributos_marca}");
+        } else {
+            $modelos = $this->modelo->with('marca');
+        }
+        if ($request->has('filtro')) {
+            $condicoes = explode(';', $request->filtro);
+            foreach ($condicoes as $condicao) {
+                $partesCondicao = explode(':', $condicao);
+                $modelos = $modelos->where($partesCondicao[0], $partesCondicao[1], $partesCondicao[2]);
+            }
+        }
+        if ($request->has('atributos')) {
+            $atributos = $request->atributos;
+            $modelos = $modelos->selectRaw($atributos)->get();
+        } else {
+            $modelos = $modelos->get();
+        }
+        return $modelos;
     }
 
     /**
