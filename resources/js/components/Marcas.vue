@@ -3,10 +3,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <div class="card mb-3">
-                <div class="card-header">Busca de Marcas</div>
-
-                <div class="card-body">
+            <!-- Card de busca -->
+            <card-component titulo="Busca de Marcas">
+                <template v-slot:conteudo>
                     <div class="row">
                         <div class="col-lg-6">
                             <input-container-component titulo="ID da marca" id="inputId" id-help="idHelp" texto-ajuda="Opcional. Informe o ID da marca">
@@ -20,12 +19,25 @@
                             </input-container-component>
                         </div>
                     </div>
-                </div>
+                </template>
 
-                <div class="card-footer">
+                <template v-slot:rodape>
                     <button type="submit" class="btn btn-primary btn-sm float-end">Pesquisar</button>
-                </div>
-            </div>
+                </template>
+            </card-component>
+            <!-- Fim card de busca -->
+
+            <!-- Card de listagem -->
+            <card-component titulo="Relação de Marcas">
+                <template v-slot:conteudo>
+                    <table-component></table-component>
+                </template>
+
+                <template v-slot:rodape>
+                    <button type="button" class="btn btn-primary btn-sm float-end">Adicionar</button>
+                </template>
+            </card-component>
+            <!-- Fim card de listagem -->
 
         </div>
     </div>
@@ -33,11 +45,7 @@
 </template>
 
 <script>
-import InputContainer from './InputContainer.vue'
 export default {
-  components: { InputContainer },
-    mounted() {
-        console.log('Component mounted.')
-    }
+    mounted() {}
 }
 </script>
