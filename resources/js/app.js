@@ -19,11 +19,13 @@ import ExampleComponent from './components/ExampleComponent.vue';
 import LoginComponent from './components/Login.vue';
 import HomeComponent from './components/Home.vue';
 import MarcasComponent from './components/Marcas.vue';
+import InputContainerComponent from './components/InputContainer.vue';
 
 app.component('example-component', ExampleComponent);
 app.component('login-component', LoginComponent);
 app.component('home-component', HomeComponent);
 app.component('marcas-component', MarcasComponent);
+app.component('input-container-component', InputContainerComponent);
 
 /**
  * The following block of code may be used to automatically register your
