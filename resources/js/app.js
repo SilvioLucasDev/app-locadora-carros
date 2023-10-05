@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import moment from 'moment';
 import './bootstrap';
 import { createApp } from 'vue';
 
@@ -52,5 +53,11 @@ app.component('alert-component', AlertComponent);
  * an "id" attribute of "app". This element is included with the "auth"
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
+
+app.config.globalProperties.$filters = {
+    formatDate(date) {
+        return moment(String(date)).format('DD/MM/YYYY');
+    },
+}
 
 app.mount('#app');

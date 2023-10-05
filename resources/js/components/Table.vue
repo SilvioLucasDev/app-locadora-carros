@@ -10,9 +10,9 @@
     <tbody>
         <tr v-for="obj, chave in dadosFiltrados" :key="chave">
             <td v-for="valor, chaveValor in obj" :key="chaveValor">
-                    <span v-if="(tipo = titulos[chaveValor].tipo) === 'text'">{{ valor }}</span>
-                    <span v-else-if="tipo === 'data'">{{ valor }}</span>
-                    <img v-else-if="tipo === 'imagem'" :src="'/storage/' + valor" width="30" height="30" />
+                <span v-if="(tipo = titulos[chaveValor].tipo) === 'text'">{{ valor }}</span>
+                <span v-else-if="tipo === 'data'">{{ $filters.formatDate(valor) }}</span>
+                <img v-else-if="tipo === 'imagem'" :src="'/storage/' + valor" width="30" height="30" />
             </td>
         </tr>
     </tbody>
