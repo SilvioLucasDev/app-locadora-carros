@@ -58,6 +58,15 @@ app.config.globalProperties.$filters = {
     formatDate(date) {
         return moment(String(date)).format('DD/MM/YYYY');
     },
+    currencyReal(value) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
+    },
+    escapeHTML(value) {
+        return value.replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
 }
 
 app.mount('#app');

@@ -8,11 +8,9 @@
         </tr>
     </thead>
     <tbody>
-        <tr v-for="obj, chave in dadosFiltrados" :key="chave">
-            <td v-for="valor, chaveValor in obj" :key="chaveValor">
-                <span v-if="(tipo = titulos[chaveValor].tipo) === 'text'">{{ valor }}</span>
-                <span v-else-if="tipo === 'data'">{{ $filters.formatDate(valor) }}</span>
-                <img v-else-if="tipo === 'imagem'" :src="'/storage/' + valor" width="30" height="30" />
+        <tr v-for="(obj, key) in dadosFiltrados" :key="key">
+            <td v-for="(valor, chave) in obj" :key="chave">
+                <span v-html="formatarValor(valor, chave)"></span>
             </td>
         </tr>
     </tbody>
@@ -24,19 +22,27 @@ export default {
     props: ["dados", "titulos"],
     computed: {
         dadosFiltrados() {
-            let campos = Object.keys(this.titulos)
-            let dadosFiltrados = []
-
-            this.dados.map((item, chave) => {
-                let itemFiltrado = {}
-
-                campos.forEach(campo => {
-                    itemFiltrado[campo] = item[campo]
-                })
-                dadosFiltrados.push(itemFiltrado)
-            })
-            return dadosFiltrados
-        }
-    }
+            return this.dados.map((item) => {
+                const itemFiltrado = {};
+                for (const campo in this.titulos) {
+                    itemFiltrado[campo] = item[campo];
+                }
+                return itemFiltrado;
+            });
+        },
+    },
+    methods: {
+        formatarValor(valor, chave) {
+            const tipo = this.titulos[chave].tipo;
+            if (tipo === 'text') {
+                return valor;
+            } else if (tipo === 'data') {
+                return this.$filters.formatDate(valor);
+            } else if (tipo === 'imagem') {
+                return `<img src="/storage/${valor}" width="30" height="30" />`;
+            }
+            return this.$filters.escapeHTML(valor);
+        },
+    },
 };
 </script>
