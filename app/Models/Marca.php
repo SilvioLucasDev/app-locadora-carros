@@ -24,6 +24,7 @@ class Marca extends Model
     {
         return [
             'required' => 'O campo :attribute é obrigatório',
+            'file' => 'O campo :attribute deve ser um arquivo',
             'nome.unique' => 'O nome informado já existe',
             'nome.min' => 'O nome deve ter no mínimo :min caracteres',
             'imagem.mimes' => 'O arquivo deve ser uma imagem do tipo PNG',

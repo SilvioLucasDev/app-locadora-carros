@@ -29,7 +29,7 @@
             <!-- Card de listagem -->
             <card-component titulo="Relação de Marcas">
                 <template v-slot:conteudo>
-                    <table-component></table-component>
+                    <table-component :dados="marcas"></table-component>
                 </template>
 
                 <template v-slot:rodape>
@@ -41,6 +41,10 @@
 
         <!-- Modal -->
         <modal-component id="modalMarca" titulo="Adicionar Marca">
+            <template v-slot:alertas>
+                <alert-component :tipo="tipo" :detalhes="transacaoDetalhes" :titulo="titulo" v-if="tipo !== ''"></alert-component>
+            </template>
+
             <template v-slot:conteudo>
                 <div class="form-group">
                     <input-container-component titulo="Nome da marca" id="novoNome" id-help="novoNomeHelp" texto-ajuda="Informe o nome da marca">
@@ -67,14 +71,38 @@
 
 <script>
 export default {
+    mounted() {
+        this.carregarLista()
+    },
     data() {
         return {
             urlBase: 'http://localhost:8000/api/v1/marca',
             nomeMarca: '',
-            arquivoImagem: []
+            arquivoImagem: [],
+            transacaoStatus: '',
+            transacaoDetalhes: {},
+            titulo: '',
+            tipo: '',
+            marcas: []
         }
     },
     methods: {
+        carregarLista() {
+            let config = {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': this.token
+                }
+            }
+
+            axios.get(this.urlBase, config)
+                .then(response => {
+                    this.marcas = response.data
+                })
+                .catch(errors => {
+                    console.log(errors)
+                })
+        },
         carregarImagem(e) {
             this.arquivoImagem = e.target.files
         },
@@ -93,10 +121,18 @@ export default {
 
             axios.post(this.urlBase, formData, config)
                 .then(response => {
-                    console.log(response)
+                    this.tipo = 'success'
+                    this.titulo = 'Marca cadastrada com sucesso'
+                    this.transacaoDetalhes = {
+                        mensagem: 'ID do registro: ' + response.data.id
+                    }
                 })
-                .catch(erros => {
-                    console.log(erros)
+                .catch(errors => {
+                    this.tipo = 'danger'
+                    this.titulo = 'Erro ao tentar cadastrar a marca'
+                    this.transacaoDetalhes = {
+                        dados: errors.response.data.errors
+                    }
                 })
         }
     },
@@ -109,6 +145,6 @@ export default {
             token = 'Bearer ' + token
             return token
         }
-    },
+    }
 }
 </script>
