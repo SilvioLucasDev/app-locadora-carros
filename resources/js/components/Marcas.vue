@@ -29,7 +29,7 @@
             <!-- Card de listagem -->
             <card-component titulo="Relação de Marcas">
                 <template v-slot:conteudo>
-                    <table-component :dados="marcas" :titulos="{
+                    <table-component :dados="marcas.data" :titulos="{
                         id: { titulo: 'ID', tipo: 'text' },
                         nome: { titulo: 'Nome', tipo: 'text' },
                         imagem: { titulo: 'Imagem', tipo: 'imagem' },
@@ -38,7 +38,18 @@
                 </template>
 
                 <template v-slot:rodape>
-                    <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
+                    <div class="row">
+                        <div class="col-10">
+                            <paginate-component>
+                                <li v-for="(link, key) in marcas.links" :key="key" :class="link.active ? 'page-item active': 'page-item'" @click="paginacao(link)">
+                                    <a class="page-link" v-html="link.label"></a>
+                                </li>
+                            </paginate-component>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
+                        </div>
+                    </div>
                 </template>
             </card-component>
             <!-- Fim card de listagem -->
@@ -88,10 +99,18 @@ export default {
             transacaoDetalhes: {},
             titulo: '',
             tipo: '',
-            marcas: []
+            marcas: {
+                data: []
+            }
         }
     },
     methods: {
+        paginacao(link) {
+            if (link.url) {
+                this.urlBase = link.url
+                this.carregarLista()
+            }
+        },
         carregarLista() {
             let config = {
                 headers: {

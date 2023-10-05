@@ -23,7 +23,7 @@ class MarcaController extends Controller
         $marcaRepository->selectAtributosRegistrosRelacionados($atributos_modelos);
         if ($request->has('filtro')) $marcaRepository->filtro($request->filtro);
         if ($request->has('atributos')) $marcaRepository->selectAtributos($request->atributos);
-        return $marcaRepository->getResultado();
+        return $marcaRepository->getResultadoPaginado(3);
     }
 
     /**
