@@ -4,9 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import moment from 'moment';
 import './bootstrap';
+import moment from 'moment';
 import { createApp } from 'vue';
+import { createStore } from 'vuex';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -14,7 +15,17 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+const store = createStore({
+    state() {
+        return {
+            teste: 'Teste de recuperação de valor da Store do Vuex'
+        }
+    }
+})
+
+const app = createApp({ store });
+
+app.use(store)
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import LoginComponent from './components/Login.vue';
