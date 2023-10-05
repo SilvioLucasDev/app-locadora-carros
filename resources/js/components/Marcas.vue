@@ -29,7 +29,11 @@
             <!-- Card de listagem -->
             <card-component titulo="Relação de Marcas">
                 <template v-slot:conteudo>
-                    <table-component :dados="marcas.data" :titulos="{
+                    <table-component :dados="marcas.data"
+                    :visualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}"
+                    :atualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}"
+                    :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}"
+                    :titulos="{
                         id: { titulo: 'ID', tipo: 'text' },
                         nome: { titulo: 'Nome', tipo: 'text' },
                         imagem: { titulo: 'Imagem', tipo: 'imagem' },
@@ -55,7 +59,7 @@
             <!-- Fim card de listagem -->
         </div>
 
-        <!-- Modal -->
+        <!-- Início modal inclusão de marca -->
         <modal-component id="modalMarca" titulo="Adicionar Marca">
             <template v-slot:alertas>
                 <alert-component :tipo="tipo" :detalhes="transacaoDetalhes" :titulo="titulo" v-if="tipo !== ''"></alert-component>
@@ -80,7 +84,23 @@
                 <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
             </template>
         </modal-component>
-        <!-- Fim Modal -->
+        <!-- Fim modal inclusão de marca -->
+
+        <!-- Início modal visualização de marca -->
+        <modal-component id="modalMarcaVisualizar" titulo="Visualizar Marca">
+            <template v-slot:alertas>
+                <alert-component :tipo="tipo" :detalhes="transacaoDetalhes" :titulo="titulo" v-if="tipo !== ''"></alert-component>
+            </template>
+
+            <template v-slot:conteudo>
+                Teste
+            </template>
+
+            <template v-slot:rodape>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </template>
+        </modal-component>
+        <!-- Fim modal visualização de marca -->
     </div>
 </div>
 </template>

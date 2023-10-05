@@ -5,12 +5,26 @@
             <th scope="col" v-for="(titulo, key) in titulos" :key="key">
                 {{ titulo.titulo }}
             </th>
+            <th v-if="visualizar.visivel || atualizar.visivel | remover.visivel"></th>
         </tr>
     </thead>
     <tbody>
         <tr v-for="(obj, key) in dadosFiltrados" :key="key">
             <td v-for="(valor, chave) in obj" :key="chave">
                 <span v-html="formatarValor(valor, chave)"></span>
+            </td>
+            <td v-if="visualizar.visivel || atualizar.visivel | remover.visivel">
+                <div class="row">
+                    <div v-if="visualizar.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
+                        <button class="btn btn-outline-primary me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="visualizar.dataToggle" :data-bs-target="visualizar.dataTarget"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                    <div v-if="atualizar.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
+                        <button class="btn btn-outline-primary me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="atualizar.dataToggle" :data-bs-target="atualizar.dataTarget"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </div>
+                    <div v-if="remover.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
+                        <button class="btn btn-outline-danger me-2 mb-md-0 btn-sm"><i class="fa-solid fa-trash" :data-bs-toggle="remover.dataToggle" :data-bs-target="remover.dataTarget"></i></button>
+                    </div>
+                </div>
             </td>
         </tr>
     </tbody>
@@ -19,7 +33,7 @@
 
 <script>
 export default {
-    props: ["dados", "titulos"],
+    props: ['dados', 'titulos', 'visualizar', 'atualizar', 'remover'],
     computed: {
         dadosFiltrados() {
             return this.dados.map((item) => {
