@@ -89,8 +89,8 @@ class ModeloController extends Controller
     {
         $modelo = $this->modelo->find($id);
         if (empty($modelo)) return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
-        Storage::disk('public')->delete($modelo->imagem);
         $modelo->delete();
+        Storage::disk('public')->delete($modelo->imagem);
         return ['msg' => 'O modelo foi removido com sucesso!'];
     }
 }

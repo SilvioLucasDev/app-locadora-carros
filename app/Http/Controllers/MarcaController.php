@@ -85,8 +85,8 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
         if (empty($marca)) return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
-        Storage::disk('public')->delete($marca->imagem);
         $marca->delete();
+        Storage::disk('public')->delete($marca->imagem);
         return ['msg' => 'A marca foi removida com sucesso!'];
     }
 }

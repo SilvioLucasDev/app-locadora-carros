@@ -16,13 +16,13 @@
             <td v-if="visualizar.visivel || atualizar.visivel | remover.visivel">
                 <div class="row">
                     <div v-if="visualizar.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
-                        <button class="btn btn-outline-primary me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="visualizar.dataToggle" :data-bs-target="visualizar.dataTarget"><i class="fa-regular fa-eye"></i></button>
+                        <button class="btn btn-outline-primary me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="visualizar.dataToggle" :data-bs-target="visualizar.dataTarget" @click="setStore(obj)"><i class="fa-regular fa-eye"></i></button>
                     </div>
                     <div v-if="atualizar.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
-                        <button class="btn btn-outline-primary me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="atualizar.dataToggle" :data-bs-target="atualizar.dataTarget"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button class="btn btn-outline-success me-2 mb-sm-2 mb-md-0 btn-sm" :data-bs-toggle="atualizar.dataToggle" :data-bs-target="atualizar.dataTarget" @click="setStore(obj)"><i class="fa-regular fa-pen-to-square"></i></button>
                     </div>
                     <div v-if="remover.visivel" class="col-sm-12 col-md-4 d-flex justify-content-center">
-                        <button class="btn btn-outline-danger me-2 mb-md-0 btn-sm"><i class="fa-solid fa-trash" :data-bs-toggle="remover.dataToggle" :data-bs-target="remover.dataTarget"></i></button>
+                        <button class="btn btn-outline-danger me-2 mb-md-0 btn-sm" :data-bs-toggle="remover.dataToggle" :data-bs-target="remover.dataTarget" @click="setStore(obj)"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             </td>
@@ -46,6 +46,12 @@ export default {
         },
     },
     methods: {
+        setStore(obj) {
+            this.$store.state.transacao.status = ''
+            this.$store.state.transacao.titulo = ''
+            this.$store.state.transacao.mensagem = ''
+            this.$store.state.item = obj
+        },
         formatarValor(valor, chave) {
             const tipo = this.titulos[chave].tipo;
             if (tipo === 'text') {
