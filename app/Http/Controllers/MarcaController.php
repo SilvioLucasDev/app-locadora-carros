@@ -67,13 +67,13 @@ class MarcaController extends Controller
         } else {
             $request->validate($this->marca->rules($id), $this->marca->feedback());
         }
+        $marca->fill($request->all());
         if ($request->file('imagem')) {
             Storage::disk('public')->delete($marca->imagem);
             $imagem = $request->file('imagem');
             $imagem_urn = $imagem->store('imagens/marcas', 'public');
+            $marca->imagem = $imagem_urn;
         }
-        $marca->fill($request->all());
-        $request->file('imagem') ? $marca->imagem = $imagem_urn : '';
         $marca->save();
         return $marca;
     }
@@ -85,8 +85,8 @@ class MarcaController extends Controller
     {
         $marca = $this->marca->find($id);
         if (empty($marca)) return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
-        $marca->delete();
         Storage::disk('public')->delete($marca->imagem);
+        $marca->delete();
         return ['msg' => 'A marca foi removida com sucesso!'];
     }
 }

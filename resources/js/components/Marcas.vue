@@ -29,7 +29,7 @@
             <!-- Card de listagem -->
             <card-component titulo="Relação de Marcas">
                 <template v-slot:conteudo>
-                    <table-component :dados="marcas.data" :visualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}" :atualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}" :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaRemover'}" :titulos="{
+                    <table-component :dados="marcas.data" :visualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaVisualizar'}" :atualizar="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaAtualizar'}" :remover="{ visivel: true, dataToggle: 'modal', dataTarget: '#modalMarcaRemover'}" :titulos="{
                         id: { titulo: 'ID', tipo: 'text' },
                         nome: { titulo: 'Nome', tipo: 'text' },
                         imagem: { titulo: 'Imagem', tipo: 'imagem' },
@@ -107,6 +107,33 @@
             </template>
         </modal-component>
         <!-- Fim modal visualização de marca -->
+
+        <!-- Início modal atualização de marca -->
+        <modal-component id="modalMarcaAtualizar" titulo="Atualizar Marca">
+            <template v-slot:alertas>
+                <alert-component :tipo="this.$store.state.transacao.status" :detalhes="this.$store.state.transacao" :titulo="this.$store.state.transacao.titulo" v-if="this.$store.state.transacao.status !== ''"></alert-component>
+            </template>
+
+            <template v-slot:conteudo>
+                <div class="form-group">
+                    <input-container-component titulo="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp" texto-ajuda="Informe o nome da marca">
+                        <input type="text" class="form-control" id="atualizarNome" aria-describedby="atualizarNomeHelp" placeholder="Nome da marca" v-model="$store.state.item.nome">
+                    </input-container-component>
+                </div>
+
+                <div class="form-group">
+                    <input-container-component titulo="Imagem" id="atualizarImagem" id-help="atualizarImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                        <input type="file" class="form-control" id="atualizarImagem" aria-describedby="atualizarImagemHelp" placeholder="Selecione uma imagem" @change="carregarImagem($event)">
+                    </input-container-component>
+                </div>
+            </template>
+
+            <template v-slot:rodape>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" @click="atualizar()">Atualizar</button>
+            </template>
+        </modal-component>
+        <!-- Fim modal atualização de marca -->
 
         <!-- Início modal remoção de marca -->
         <modal-component id="modalMarcaRemover" titulo="Remover Marca">
@@ -225,6 +252,38 @@ export default {
                 .catch(errors => {
                     this.$store.state.transacao.status = 'danger'
                     this.$store.state.transacao.titulo = 'Erro ao tentar cadastrar a marca'
+                    this.$store.state.transacao.mensagem = errors.response.data.erro
+                    this.$store.state.transacao.dados = errors.response.data.errors
+                })
+        },
+        atualizar() {
+            let formData = new FormData();
+            formData.append('_method', 'patch')
+            formData.append('nome', this.$store.state.item.nome)
+            if (this.arquivoImagem[0]) formData.append('imagem', this.arquivoImagem[0])
+
+            let url = this.urlBase + '/' + this.$store.state.item.id
+
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
+                    'Authorization': this.token
+                }
+            }
+
+            axios.post(url, formData, config)
+                .then(response => {
+                    this.$store.state.transacao.status = 'success'
+                    this.$store.state.transacao.titulo = 'Marca atualizada com sucesso'
+                    atualizarImagem.value = ''
+                    this.carregarLista()
+                })
+                .catch(errors => {
+                    console.log(errors.response)
+                    this.$store.state.transacao.status = 'danger'
+                    this.$store.state.transacao.titulo = 'Erro ao tentar atualizar a marca'
+                    this.$store.state.transacao.mensagem = errors.response.data.erro
                     this.$store.state.transacao.dados = errors.response.data.errors
                 })
         },

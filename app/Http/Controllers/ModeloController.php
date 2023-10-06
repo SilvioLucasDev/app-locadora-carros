@@ -71,13 +71,13 @@ class ModeloController extends Controller
         } else {
             $request->validate($this->modelo->rules($id), $this->modelo->feedback());
         }
+        $modelo->fill($request->all());
         if ($request->file('imagem')) {
             Storage::disk('public')->delete($modelo->imagem);
             $imagem = $request->file('imagem');
             $imagem_urn = $imagem->store('imagens/modelos', 'public');
+            $modelo->imagem = $imagem_urn;
         }
-        $modelo->fill($request->all());
-        $request->file('imagem') ? $modelo->imagem = $imagem_urn : '';
         $modelo->save();
         return $modelo;
     }

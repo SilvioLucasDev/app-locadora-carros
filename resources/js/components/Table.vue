@@ -50,6 +50,7 @@ export default {
             this.$store.state.transacao.status = ''
             this.$store.state.transacao.titulo = ''
             this.$store.state.transacao.mensagem = ''
+            this.$store.state.transacao.dados = ''
             this.$store.state.item = obj
         },
         formatarValor(valor, chave) {
