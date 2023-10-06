@@ -211,14 +211,8 @@ export default {
         },
         carregarLista() {
             let url = this.urlBase + '?' + this.urlPaginacao + this.urlFiltro
-            let config = {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': this.token
-                }
-            }
 
-            axios.get(url, config)
+            axios.get(url)
                 .then(response => {
                     this.marcas = response.data
                 })
@@ -236,9 +230,7 @@ export default {
 
             let config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json',
-                    'Authorization': this.token
+                    'Content-Type': 'multipart/form-data'
                 }
             }
 
@@ -266,9 +258,7 @@ export default {
 
             let config = {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json',
-                    'Authorization': this.token
+                    'Content-Type': 'multipart/form-data'
                 }
             }
 
@@ -280,7 +270,6 @@ export default {
                     this.carregarLista()
                 })
                 .catch(errors => {
-                    console.log(errors.response)
                     this.$store.state.transacao.status = 'danger'
                     this.$store.state.transacao.titulo = 'Erro ao tentar atualizar a marca'
                     this.$store.state.transacao.mensagem = errors.response.data.erro
@@ -290,14 +279,7 @@ export default {
         remover() {
             let url = this.urlBase + '/' + this.$store.state.item.id
 
-            let config = {
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': this.token
-                }
-            }
-
-            axios.delete(url, config)
+            axios.delete(url)
                 .then(response => {
                     this.$store.state.transacao.status = 'success'
                     this.$store.state.transacao.titulo = 'Transação realizada com sucesso'
@@ -310,16 +292,6 @@ export default {
                     this.$store.state.transacao.mensagem = errors.response.data.erro
                 })
         },
-    },
-    computed: {
-        token() {
-            let token = document.cookie.split(';').find(indice => {
-                return indice.includes('token=')
-            })
-            token = token.split('=')[1]
-            token = 'Bearer ' + token
-            return token
-        }
     }
 }
 </script>
